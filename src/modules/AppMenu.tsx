@@ -1,25 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
-import { Menu, Icon, Switch, Row, TreeSelect, Select } from 'antd';
-import subredditsTree from '../utils/subredditsTree';
+import { Menu, Icon, Switch, Row, TreeSelect, Select, Drawer, Form, Dropdown, Button } from 'antd';
+import { TabBar } from 'antd-mobile';
 
-const { SubMenu } = Menu;
+import subredditsTree from '../utils/subredditsTree';
 const { Option } = Select;
 
-const SubMenuTitle = ({ title, icon } : { title: string, icon?: string}) => (
-	<span>
-		{icon ? <Icon type={icon} /> : null}
-		<span>{title}</span>
-	</span>
-)
+const MenusContainer = styled.div`
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	@media (min-width: 520px) {
+		top: 0;
+		bottom: unset;
+		.am-tab-bar{
+			display: none;
+		}
+	}
+`;
+const MenuBar = styled(Row)`
+	display: none;
+	@media (min-width: 520px) {display: flex;}
 
-const MenuBar = styled(Menu)`
 	width: 100vw;
 	padding: 0 20px !important;
-	display: flex;
-    align-items: center;
+	height: 50px;
+	align-items: center;
+	background: white;
 `;
-
 const StyledSelect  = styled(Select)`
 	width: 200px;
 	margin-right: 20px !important;
@@ -35,13 +45,20 @@ const SubredditSelect = styled(TreeSelect)`
 		display: inline-flex;
 	}
 `;
+const MenuDrawer = styled(Drawer)`
+	z-index: 99 !important;
+	.ant-drawer-content-wrapper {
+		height: auto !important;
+		padding-bottom: 50px;
+	}
+`;
 
 type Props = {
 	subreddits: string[], setSubreddits: (subreddits: string[]) => void,
 	order: string, setOrder: (order: string) => void,
 	time: string, setTime: (time: string) => void,
 	showNSFW: boolean, setShowNSFW: (showNSFW: boolean) => void,
-	onlyNSFW: boolean, setOnlyNSFW: (onlyNSFW: boolean) => void,
+	showThumbnails: boolean, setShowThumbnails: (showThumbnails: boolean) => void,
 }
 
 
@@ -50,82 +67,82 @@ const AppMenu = (props: any) => {
 	const {
 		subreddits, setSubreddits,
 		order, setOrder,
-		showNSFW, setShowNSFW,
-		onlyNSFW, setOnlyNSFW,
 		time, setTime,
 	}: Props = props;
+	const [filtersDrawer, setFiltersDrawer] = useState(false)
+
+	const handleToggleDrawer = (setDrawer, val) => {
+		setFiltersDrawer(false);
+		setDrawer(val);
+	}
+
+	const SelectTime = () => (
+		<StyledSelect
+			value={time}
+			onChange={setTime}
+		>
+			<Option value="hour">Past Hour</Option>
+			<Option value="day">Past 24 Hours</Option>
+			<Option value="week">Past Week</Option>
+			<Option value="month">Past Month</Option>
+			<Option value="year">Past Year</Option>
+			<Option value="all">All Time</Option>
+		</StyledSelect>
+	)
+	const SelectOrder = () => (
+		<StyledSelect value={order} onChange={setOrder} >
+			<Option value="hot">Hot</Option>
+			<Option value="new">New</Option>
+			<Option value="top">Top</Option>
+			<Option value="rising">Rising</Option>
+			<Option value="controversial">Controversial</Option>
+		</StyledSelect>
+	)
+	const SelectSubreddits = () => (
+		<SubredditSelect
+			value={subreddits}
+			onChange={setSubreddits}
+			treeData={subredditsTree}
+			treeCheckable
+			allowClear
+			searchPlaceholder="Select subreddits or add one"
+		/>
+	)
+
 	return (
-		<div>
-			<MenuBar 
-				mode="horizontal"
+		<MenusContainer>
+			<MenuBar type="flex">
+				<SelectOrder />
+				{order === 'top' || order === 'controversial' ? <SelectTime /> : null}
+				<SelectSubreddits />
+			</MenuBar>
+
+			<MenuDrawer
+				title="Sort"
+				placement={'bottom'}
+				visible={filtersDrawer}
+				onClose={() => setFiltersDrawer(false)}
 			>
-				<StyledSelect
-					value={order}
-					onChange={setOrder}
-				>
-					<Option value="hot">Hot</Option>
-					<Option value="new">New</Option>
-					<Option value="top">Top</Option>
-					<Option value="rising">Rising</Option>
-					<Option value="controversial">Controversial</Option>
-				</StyledSelect>
-
-				{order === 'top' || order === 'controversial'
-					? (
-						<StyledSelect
-							value={time}
-							onChange={setTime}
-						>
-							<Option value="hour">Past Hour</Option>
-							<Option value="day">Past 24 Hours</Option>
-							<Option value="week">Past Week</Option>
-							<Option value="month">Past Month</Option>
-							<Option value="year">Past Year</Option>
-							<Option value="all">Of All Time</Option>
-						</StyledSelect>
-					)
-					: null
-				}
-
-				<SubredditSelect
-					value={subreddits}
-					onChange={setSubreddits}
-					treeData={subredditsTree}
-					treeCheckable
-					allowClear
-					searchPlaceholder="Select subreddits or add one"
-				/>
-
-				<SubMenu
-					key="settings-menu"
-					title={<SubMenuTitle title="Settings" icon="setting" />}
-				>
-					<Menu.Item>
-						<Row type="flex" justify="space-between" align="middle">
-							<span>Show NSFW </span>
-							<Switch
-								onChange={setShowNSFW}
-								checked={showNSFW}
-							/>
-						</Row>
-					</Menu.Item>
-					{showNSFW
-						? (
-							<Menu.Item>
-								<Row type="flex" justify="space-between" align="middle">
-									<span>Only NSFW </span>
-									<Switch
-										onChange={setOnlyNSFW}
-										checked={onlyNSFW}
-									/>
-								</Row>
-							</Menu.Item>
-						)
+				<Form layout="vertical">
+					<Form.Item label="Order:"><SelectOrder /></Form.Item>
+					{order === 'top' || order === 'controversial'
+						? <Form.Item label="Show posts since:"><SelectTime /></Form.Item>
 						: null
 					}
-				</SubMenu>
-			</MenuBar>
-		</div>
+					<Form.Item label="Subreddits:"><SelectSubreddits /></Form.Item>
+				</Form>
+			</MenuDrawer>
+
+			<TabBar>
+				<TabBar.Item
+					key="filters"
+					title="Filters"
+					icon={<Icon type="filter" />}
+					selectedIcon={<Icon type="filter" style={{ color: '#08c' }} />}
+					onPress={() => handleToggleDrawer(setFiltersDrawer, !filtersDrawer)}
+				/>
+			</TabBar> 
+		</MenusContainer>
 	)
 }
 

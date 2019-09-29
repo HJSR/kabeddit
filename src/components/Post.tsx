@@ -5,7 +5,6 @@ import { Card } from 'antd'
 const { Meta } = Card;
 
 const PostCard = styled(Card)`
-	img { max-width: 100% }
 	width: 50%;
 	@media (min-width: 1280px) {
 		width: 25%;
@@ -30,6 +29,11 @@ const PostCard = styled(Card)`
 		}
 	}
 `;
+const ImageContainer = styled.a``;
+const Image = styled.img`
+	width: 100%;
+	margin: 0 auto;	
+`;
 
 const Post = ({ post, showThumbs }: { post:any ,showThumbs?: boolean}) => {
 	const { permalink, title, subreddit_name_prefixed, url, thumbnail } = post;
@@ -41,9 +45,9 @@ const Post = ({ post, showThumbs }: { post:any ,showThumbs?: boolean}) => {
 		<PostCard
 			hoverable
 			cover={
-				<a href={image} download="title">
-					<img alt={title} src={image} />
-				</a>
+				<ImageContainer href={image} download="title" target="_blank" rel="noopener noreferrer">
+					<Image alt={title} src={image} />
+				</ImageContainer>
 			}
 		>
 			<Meta

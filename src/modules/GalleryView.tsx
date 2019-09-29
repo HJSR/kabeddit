@@ -7,7 +7,7 @@ import Post from '../components/Post';
 import { Spin, Row, BackTop } from 'antd';
 
 const GalleryView = (props) => {
-	const { subreddits, order, time } = props;
+	const { subreddits, order, time, showNSFW, showThumbnails } = props;
 	const [posts, setPosts] = useState();
 	const [loading, setLoading] = useState(false);
 	
@@ -48,9 +48,15 @@ const GalleryView = (props) => {
 			}
 		>
 			<Masonry>
-				{posts ? posts.map((post) => (
-					<Post key={post.permalink} post={post} />
-				)): null}
+				{posts ? posts.map((post) => {
+					if (!showNSFW && post.over_18 === true) return null;
+					return (
+						<Post	
+							key={post.permalink}
+							post={post}
+							showThumbs={showThumbnails}
+						/>)
+				}): null}
 			</Masonry>
 			<BackTop />
 		</InfiniteScroll>
