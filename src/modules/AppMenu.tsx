@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
-import { Menu, Icon, Switch, Row, TreeSelect, Select, Drawer, Form, Dropdown, Button } from 'antd';
+import { Icon, Row, TreeSelect, Select, Drawer, Form } from 'antd';
 import { TabBar } from 'antd-mobile';
 
 import subredditsTree from '../utils/subredditsTree';
