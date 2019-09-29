@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card } from 'antd'
+import { Card, Icon } from 'antd'
 
 const { Meta } = Card;
 
@@ -53,7 +53,7 @@ const Post = ({ post, showThumbs }: { post:any ,showThumbs?: boolean}) => {
 			<Meta
 				title={
 					<a href={redditLink} target="_blank" rel="noopener noreferrer">
-						{title}
+						<Icon type="link" /> {title}
 					</a>
 				}
 				description={subreddit_name_prefixed}
