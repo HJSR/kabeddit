@@ -11,7 +11,12 @@ export type Params = {
 }
 
 const getPosts = ({ subreddits, order, time, limit }: Params, callback?: Function): Object[] => {
-	if (!limit) limit = 50;
+	const options = {
+		limit: limit || 50,
+		count: limit || 50,
+		amount: limit || 50,
+		skipReplies: true,
+	}
 
 	let subsString;
 	if (subreddits.length === 0) subsString = 'all';
@@ -21,22 +26,22 @@ const getPosts = ({ subreddits, order, time, limit }: Params, callback?: Functio
 	let listingResult;
 	switch(order) {
 		case 'hot':
-			listingResult = subs.getHot({ limit });
+			listingResult = subs.getHot({ ...options });
 			break;
 		case 'new':
-			listingResult = subs.getNew({ limit });
+			listingResult = subs.getNew({ ...options });
 			break;
 		case 'top':
-			listingResult = subs.getTop({ limit, time });
+			listingResult = subs.getTop({ ...options, time });
 			break;
-		case 'rising':
-			listingResult = subs.getRising();
-			break;
+		// case 'rising':
+		// 	listingResult = subs.getRising({ ...options });
+		// 	break;
 		case 'controversial':
-			listingResult = subs.getControversial({ limit, time });
+			listingResult = subs.getControversial({ ...options, time });
 			break;
 		default:
-			listingResult = subs.getHot({ limit });
+			listingResult = subs.getHot({ ...options });
 			break;
 	}
 	if (callback) return callback(listingResult);

@@ -94,7 +94,7 @@ const AppMenu = (props: any) => {
 			<Option value="hot">Hot</Option>
 			<Option value="new">New</Option>
 			<Option value="top">Top</Option>
-			<Option value="rising">Rising</Option>
+			{/* <Option value="rising">Rising</Option> */}
 			<Option value="controversial">Controversial</Option>
 		</StyledSelect>
 	)
