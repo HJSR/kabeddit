@@ -32,6 +32,10 @@ const defaultSubreddits = [
 	'moescape',
 	'streetmoe',
 	'awwnime',
+	'twodeeart',
+	'AnimeWallpaper',
+	'AnimePhoneWallpapers',
+	'Pixiv'
 ]
 export { defaultSubreddits };
 export default subredditsTree;
