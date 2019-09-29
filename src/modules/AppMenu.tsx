@@ -12,7 +12,7 @@ const MenusContainer = styled.div`
 	left: 0;
 	right: 0;
 	z-index: 100;
-	@media (min-width: 520px) {
+	@media (min-width: 640px) {
 		top: 0;
 		bottom: unset;
 		.am-tab-bar{
@@ -22,7 +22,7 @@ const MenusContainer = styled.div`
 `;
 const MenuBar = styled(Row)`
 	display: none;
-	@media (min-width: 520px) {display: flex;}
+	@media (min-width: 640px) {display: flex;}
 
 	width: 100vw;
 	padding: 0 20px !important;

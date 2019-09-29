@@ -8,7 +8,7 @@ import getPosts from '../services/getPosts';
 import Post from '../components/Post';
 
 const PostsContainer = styled.div`
-	@media (min-width: 769) {	
+	@media (min-width: 640px) {	
 		padding-top: 50px;
 	}
 `;
