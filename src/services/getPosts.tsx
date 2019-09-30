@@ -34,9 +34,6 @@ const getPosts = ({ subreddits, order, time, limit }: Params, callback?: Functio
 		case 'top':
 			listingResult = subs.getTop({ ...options, time });
 			break;
-		// case 'rising':
-		// 	listingResult = subs.getRising({ ...options });
-		// 	break;
 		case 'controversial':
 			listingResult = subs.getControversial({ ...options, time });
 			break;
