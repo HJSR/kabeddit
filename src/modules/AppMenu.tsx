@@ -53,22 +53,11 @@ const MenuDrawer = styled(Drawer)`
 	}
 `;
 
-type Props = {
-	subreddits: string[], setSubreddits: (subreddits: string[]) => void,
-	order: string, setOrder: (order: string) => void,
-	time: string, setTime: (time: string) => void,
-	showNSFW: boolean, setShowNSFW: (showNSFW: boolean) => void,
-	showThumbnails: boolean, setShowThumbnails: (showThumbnails: boolean) => void,
-}
-
 
 // anyadir opcion de columnas
 const AppMenu = (props: any) => {
-	const {
-		subreddits, setSubreddits,
-		order, setOrder,
-		time, setTime,
-	}: Props = props;
+	const { subreddits, setSubreddits, sort, setSort } = props;
+	const { order, time } = sort;
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
 
 	const handleToggleDrawer = (setDrawer, val) => {
@@ -77,10 +66,7 @@ const AppMenu = (props: any) => {
 	}
 
 	const SelectTime = () => (
-		<StyledSelect
-			value={time}
-			onChange={setTime}
-		>
+		<StyledSelect value={time} onChange={(time) => setSort({ ...sort, time })}>
 			<Option value="hour">Past Hour</Option>
 			<Option value="day">Past 24 Hours</Option>
 			<Option value="week">Past Week</Option>
@@ -90,7 +76,7 @@ const AppMenu = (props: any) => {
 		</StyledSelect>
 	)
 	const SelectOrder = () => (
-		<StyledSelect value={order} onChange={setOrder} >
+		<StyledSelect value={sort.order} onChange={(order) => setSort({...sort, order })} >
 			<Option value="hot">Hot</Option>
 			<Option value="new">New</Option>
 			<Option value="top">Top</Option>
