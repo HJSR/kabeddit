@@ -1,7 +1,7 @@
 
 const subreddit = (name: string) => ({
-	key: name.toLowerCase(), value:
-		name.toLowerCase(),
+	key: name.toLowerCase(),
+	value: name.toLowerCase(),
 	title: name,
 })
 
