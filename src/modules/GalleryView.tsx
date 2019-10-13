@@ -31,7 +31,7 @@ const GalleryView = (props) => {
 	const { showNSFW, showThumbnails } = settings;
 	
 	const [posts, setPosts] = useState();
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	
 	const getMorePosts = async () => {
 		if (!loading && posts) {
