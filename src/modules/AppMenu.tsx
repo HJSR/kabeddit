@@ -56,8 +56,9 @@ const MenuDrawer = styled(Drawer)`
 
 // anyadir opcion de columnas
 const AppMenu = (props: any) => {
-	const { subreddits, setSubreddits, sort, setSort } = props;
-	const { order, time } = sort;
+	const { filters, setFilters, settings, setSettings } = props;
+	const { subreddits, order, time } = filters;
+
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
 
 	const handleToggleDrawer = (setDrawer, val) => {
@@ -66,7 +67,7 @@ const AppMenu = (props: any) => {
 	}
 
 	const SelectTime = () => (
-		<StyledSelect value={time} onChange={(time) => setSort({ ...sort, time })}>
+		<StyledSelect value={time} onChange={(time) => setFilters({ ...filters, time })}>
 			<Option value="hour">Past Hour</Option>
 			<Option value="day">Past 24 Hours</Option>
 			<Option value="week">Past Week</Option>
@@ -76,7 +77,7 @@ const AppMenu = (props: any) => {
 		</StyledSelect>
 	)
 	const SelectOrder = () => (
-		<StyledSelect value={sort.order} onChange={(order) => setSort({...sort, order })} >
+		<StyledSelect value={order} onChange={(order) => setFilters({...filters, order })} >
 			<Option value="hot">Hot</Option>
 			<Option value="new">New</Option>
 			<Option value="top">Top</Option>
@@ -86,7 +87,7 @@ const AppMenu = (props: any) => {
 	const SelectSubreddits = () => (
 		<SubredditSelect
 			value={subreddits}
-			onChange={setSubreddits}
+			onChange={(thisSubs) => setFilters({ ...filters, subreddits: thisSubs })}
 			treeData={subredditsTree}
 			treeCheckable
 			allowClear

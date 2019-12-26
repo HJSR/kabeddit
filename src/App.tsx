@@ -7,27 +7,31 @@ import GalleryView from './modules/GalleryView';
 
 import { defaultSubreddits } from './utils/subredditsTree';
 
+const defaultFilters = {
+	subreddits: defaultSubreddits,
+	order: 'hot',
+	time: 'day',
+}
+
 const App: React.FC = () => {
-	const [subreddits, setSubreddits]= useState(defaultSubreddits);
+	const [filters, setFilters] = useState(defaultFilters);
 	const [settings, setSettings] = useState({
 		showNSFW: true,
 		showThumbnails: false,
 	});
-	const [sort, setSort] = useState({
-		order: 'hot',
-		time: 'day',
-	});
-
-	const stateProps = {
-		subreddits, setSubreddits,
-		settings, setSettings,
-		sort, setSort,
-	}
 
   return (
     <div className="App">
-		<AppMenu {...stateProps} />
-		<GalleryView {...stateProps} />
+		<AppMenu
+			filters={filters}
+			setFilters={setFilters}
+			settings={settings}
+			setSettings={setSettings}
+		/>
+		<GalleryView
+			filters={filters}
+			settings={settings}
+		/>
     </div>
   );
 }

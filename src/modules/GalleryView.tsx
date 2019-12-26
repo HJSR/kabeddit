@@ -25,9 +25,9 @@ const Loader = () => (
 )
 
 const GalleryView = (props) => {
-	const { subreddits, sort, settings } = props;
+	const { filters, settings } = props;
 
-	const { order, time } = sort;
+	const { subreddits, order, time } = filters;
 	const { showNSFW, showThumbnails } = settings;
 	
 	const [posts, setPosts] = useState();
