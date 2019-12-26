@@ -17,7 +17,7 @@ const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case constants.UPDATE_FILTERS:
 			return Object.assign({}, state, {
-				...action.filters,
+				...action.newFilters,
 			})
 		default:
 			return state

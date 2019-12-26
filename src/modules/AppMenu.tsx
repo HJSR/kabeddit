@@ -3,23 +3,31 @@ import styled from 'styled-components'
 import { Icon, Row, TreeSelect, Select, Drawer, Form } from 'antd';
 import { TabBar } from 'antd-mobile';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import subredditsTree from '../utils/subredditsTree';
+import { actions } from '../redux/duck';
+
+const { updateFilters } = actions;
 const { Option } = Select;
 
 // anyadir opcion de columnas
 const AppMenu = React.memo((props: any) => {
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
 	const { time, order, subreddits } = useSelector(state => state);
+	const dispatch = useDispatch();
 
 	const handleToggleDrawer = (setDrawer, val) => {
 		setFiltersDrawer(false);
 		setDrawer(val);
 	}
 
+	const handleChange = (newValue) => {
+		dispatch(updateFilters(newValue));
+	}
+
 	const SelectTime = () => (
-		<StyledSelect value={time}>
+		<StyledSelect value={time} onChange={(time) => handleChange({ time })}>
 			<Option value="hour">Past Hour</Option>
 			<Option value="day">Past 24 Hours</Option>
 			<Option value="week">Past Week</Option>
@@ -29,7 +37,7 @@ const AppMenu = React.memo((props: any) => {
 		</StyledSelect>
 	)
 	const SelectOrder = () => (
-		<StyledSelect value={order}>
+		<StyledSelect value={order} onChange={(order) => handleChange({ order })}>
 			<Option value="hot">Hot</Option>
 			<Option value="new">New</Option>
 			<Option value="top">Top</Option>
@@ -39,6 +47,7 @@ const AppMenu = React.memo((props: any) => {
 	const SelectSubreddits = () => (
 		<SubredditSelect
 			value={subreddits}
+			onChange={(subreddits) => handleChange({ subreddits })}
 			treeData={subredditsTree}
 			treeCheckable
 			allowClear
