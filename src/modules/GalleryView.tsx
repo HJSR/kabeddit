@@ -4,6 +4,9 @@ import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import { Spin, Row, BackTop } from 'antd';
 
+import { useSelector } from 'react-redux';
+
+
 import getPosts from '../services/getPosts';
 import Post from '../components/Post';
 
@@ -25,10 +28,7 @@ const Loader = () => (
 )
 
 const GalleryView = (props) => {
-	const { filters, settings } = props;
-
-	const { subreddits, order, time } = filters;
-	const { showNSFW, blurNSFW, showThumbnails } = settings;
+	const { subreddits, order, time, showNSFW, blurNSFW, showThumbnails } = useSelector(state => state);
 	
 	const [posts, setPosts] = useState();
 	const [loading, setLoading] = useState(true);
