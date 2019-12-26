@@ -28,7 +28,7 @@ const GalleryView = (props) => {
 	const { filters, settings } = props;
 
 	const { subreddits, order, time } = filters;
-	const { showNSFW, showThumbnails } = settings;
+	const { showNSFW, blurNSFW, showThumbnails } = settings;
 	
 	const [posts, setPosts] = useState();
 	const [loading, setLoading] = useState(true);
@@ -68,6 +68,7 @@ const GalleryView = (props) => {
 										key={post.permalink}
 										post={post}
 										showThumbs={showThumbnails}
+										blur={blurNSFW && post.over_18}
 									/>)
 							}) : <Loader />}
 						</Masonry>

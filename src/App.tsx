@@ -16,6 +16,7 @@ const defaultFilters = {
 const App: React.FC = () => {
 	const [filters, setFilters] = useState(defaultFilters);
 	const [settings, setSettings] = useState({
+		blurNSFW: true,
 		showNSFW: true,
 		showThumbnails: false,
 	});
