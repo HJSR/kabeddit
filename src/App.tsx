@@ -10,7 +10,6 @@ import checkVersion from './services/checkVersion';
 
 const App: React.FC = () => {
 	useEffect(() => {
-		console.log('yes');
 		checkVersion();
 	}, [])
   return (
