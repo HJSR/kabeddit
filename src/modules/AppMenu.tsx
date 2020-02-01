@@ -21,6 +21,7 @@ const SelectTime = ({ time, handleChange }) => (
 		<Option value="all">All Time</Option>
 	</StyledSelect>
 )
+
 const SelectOrder = ({ order, handleChange }) => (
 	<StyledSelect value={order} onChange={(order) => handleChange({ order })}>
 		<Option value="hot">Hot</Option>
@@ -35,7 +36,7 @@ const NSFWOptions = () => {
 	const dispatch = useDispatch();
 	const handleChange = (val) => dispatch(updateFilters(val))
 	return (
-		<div style={{ display: 'flex', alignItems: 'center'}}>
+		<div style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>
 			<span style={{ marginRight: 5 }}>NSFW: </span>
 			<Switch
 				checkedChildren="Show"
@@ -51,6 +52,7 @@ const NSFWOptions = () => {
 							unCheckedChildren="Clear"
 							defaultChecked={blurNSFW}
 							onChange={(val) => handleChange({ blurNSFW: val })}
+							style={{ marginLeft: 5 }}
 						/>
 					)
 					: null
