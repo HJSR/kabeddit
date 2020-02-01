@@ -76,24 +76,34 @@ const ThumbnailsOptions = () => {
 	)
 }
 
-const SelectSubreddits = ({ subreddits, handleChange }) => (
-	<SubredditSelect
-		value={subreddits}
-		onChange={(subreddits) => handleChange({ subreddits })}
-		treeData={subredditsTree}
-		treeCheckable
-		allowClear
-		showCheckedStrategy={'SHOW_PARENT'}
-		showSearch={false}
-		searchPlaceholder="Select subreddits"
-	/>
-)
+const SelectSubreddits = () => {
+	const { subreddits } = useSelector(state => state);
+	const dispatch = useDispatch();
+	const handleChange = (val) => {
+		dispatch(updateFilters({ subreddits: val }))
+	}
+	return (
+		<SubredditSelect
+			value={subreddits}
+			onChange={(val) => {
+				console.log(val)
+				handleChange(val)
+			}}
+			treeData={subredditsTree}
+			treeCheckable
+			allowClear
+			showCheckedStrategy={'SHOW_PARENT'}
+			showSearch={false}
+			searchPlaceholder="Select subreddits"
+		/>
+	)
+}
 
 // anyadir opcion de columnas
 const AppMenu = React.memo((props: any) => {
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
 	const state = useSelector(state => state);
-	const { time, order, subreddits } = useSelector(state => state);
+	const { time, order } = useSelector(state => state);
 	const dispatch = useDispatch();
 	
 	useEffect(() => {
@@ -122,7 +132,7 @@ const AppMenu = React.memo((props: any) => {
 						? <SelectTime time={time} handleChange={handleChange}/> 
 						: null
 				}
-				<SelectSubreddits subreddits={subreddits} handleChange={handleChange}/>
+				<SelectSubreddits />
 				<NSFWOptions />
 				<ThumbnailsOptions />
 			</MenuBar>
@@ -146,7 +156,7 @@ const AppMenu = React.memo((props: any) => {
 						: null
 					}
 					<Form.Item label="Subreddits:">
-						<SelectSubreddits subreddits={subreddits} handleChange={handleChange}/>
+						<SelectSubreddits />
 					</Form.Item>
 					<Form.Item label="">
 						<NSFWOptions />
