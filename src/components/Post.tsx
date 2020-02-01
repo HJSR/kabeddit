@@ -7,7 +7,7 @@ const { Meta } = Card;
 const Post = ({ post, showThumbs, blur }: { post: any, showThumbs?: boolean, blur?: boolean }) => {
 	const { permalink, title, subreddit_name_prefixed, url, thumbnail } = post;
 	const [previewVisible, setPreviewVisible] = useState(false);
-	const image = showThumbs ? thumbnail : url;
+	const image = url;
 	const redditUrl = 'https://reddit.com';
 	const redditLink = `${redditUrl}${permalink}`;
 
@@ -18,7 +18,7 @@ const Post = ({ post, showThumbs, blur }: { post: any, showThumbs?: boolean, blu
 				<ImageContainer
 					onClick={() => setPreviewVisible(true)}
 				>
-					<Image alt={title} src={image} blur={blur} />
+					<Image alt={title} src={showThumbs ? thumbnail : image} blur={blur} />
 				</ImageContainer>
 			}
 		>
