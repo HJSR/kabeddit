@@ -57,7 +57,7 @@ const GalleryView = (props) => {
 				loadMore={getMorePosts}
 				hasMore={true || false}
 				threshold={5000}
-				loader={<Loader />}
+				loader={<Loader key="loader"/>}
 			>	
 				{!loading ? (
 						<Masonry>
