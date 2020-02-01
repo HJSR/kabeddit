@@ -76,12 +76,20 @@ const AppMenu = React.memo((props: any) => {
 				onClose={() => setFiltersDrawer(false)}
 			>
 				<Form layout="vertical">
-					<Form.Item label="Order:"><SelectOrder order={order} handleChange={handleChange} /></Form.Item>
+					<Form.Item label="Order:">
+						<SelectOrder order={order} handleChange={handleChange} />
+					</Form.Item>
 					{order === 'top' || order === 'controversial'
-						? <Form.Item label="Show posts since:"><SelectTime time={time} handleChange={handleChange}/></Form.Item>
+						? (
+							<Form.Item label="Show posts since:">
+								<SelectTime time={time} handleChange={handleChange}/>
+							</Form.Item>
+						)
 						: null
 					}
-					<Form.Item label="Subreddits:"><SelectSubreddits subreddits={subreddits} handleChange={handleChange}/></Form.Item>
+					<Form.Item label="Subreddits:">
+						<SelectSubreddits subreddits={subreddits} handleChange={handleChange}/>
+					</Form.Item>
 				</Form>
 			</MenuDrawer>
 
