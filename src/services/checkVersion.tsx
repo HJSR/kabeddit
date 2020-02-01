@@ -16,7 +16,7 @@ const checkVersion = async () => {
 			description: (
 				<Button 
 					type="link"
-					onClick={() => { window.location.reload() }}
+					onClick={() => window.location.reload(true)}
 					style={{ paddingLeft: 0 }}
 				>
 					Click here to restart
