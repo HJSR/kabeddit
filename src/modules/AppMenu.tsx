@@ -11,6 +11,37 @@ import { actions } from '../redux/duck';
 const { updateFilters } = actions;
 const { Option } = Select;
 
+const SelectTime = ({ time, handleChange }) => (
+	<StyledSelect value={time} onChange={(time) => handleChange({ time })}>
+		<Option value="hour">Past Hour</Option>
+		<Option value="day">Past 24 Hours</Option>
+		<Option value="week">Past Week</Option>
+		<Option value="month">Past Month</Option>
+		<Option value="year">Past Year</Option>
+		<Option value="all">All Time</Option>
+	</StyledSelect>
+)
+const SelectOrder = ({ order, handleChange }) => (
+	<StyledSelect value={order} onChange={(order) => handleChange({ order })}>
+		<Option value="hot">Hot</Option>
+		<Option value="new">New</Option>
+		<Option value="top">Top</Option>
+		<Option value="controversial">Controversial</Option>
+	</StyledSelect>
+)
+const SelectSubreddits = ({ subreddits, handleChange }) => (
+	<SubredditSelect
+		value={subreddits}
+		onChange={(subreddits) => handleChange({ subreddits })}
+		treeData={subredditsTree}
+		treeCheckable
+		allowClear
+		showCheckedStrategy={'SHOW_PARENT'}
+		showSearch={false}
+		searchPlaceholder="Select subreddits"
+	/>
+)
+
 // anyadir opcion de columnas
 const AppMenu = React.memo((props: any) => {
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
@@ -26,43 +57,16 @@ const AppMenu = React.memo((props: any) => {
 		dispatch(updateFilters(newValue));
 	}
 
-	const SelectTime = () => (
-		<StyledSelect value={time} onChange={(time) => handleChange({ time })}>
-			<Option value="hour">Past Hour</Option>
-			<Option value="day">Past 24 Hours</Option>
-			<Option value="week">Past Week</Option>
-			<Option value="month">Past Month</Option>
-			<Option value="year">Past Year</Option>
-			<Option value="all">All Time</Option>
-		</StyledSelect>
-	)
-	const SelectOrder = () => (
-		<StyledSelect value={order} onChange={(order) => handleChange({ order })}>
-			<Option value="hot">Hot</Option>
-			<Option value="new">New</Option>
-			<Option value="top">Top</Option>
-			<Option value="controversial">Controversial</Option>
-		</StyledSelect>
-	)
-	const SelectSubreddits = () => (
-		<SubredditSelect
-			value={subreddits}
-			onChange={(subreddits) => handleChange({ subreddits })}
-			treeData={subredditsTree}
-			treeCheckable
-			allowClear
-			showCheckedStrategy={'SHOW_PARENT'}
-			showSearch={false}
-			searchPlaceholder="Select subreddits"
-		/>
-	)
-
 	return (
 		<MenusContainer>
 			<MenuBar type="flex">
-				<SelectOrder />
-				{order === 'top' || order === 'controversial' ? <SelectTime /> : null}
-				<SelectSubreddits />
+				<SelectOrder order={order} handleChange={handleChange} />
+				{
+					order === 'top' || order === 'controversial'
+						? <SelectTime time={time} handleChange={handleChange}/> 
+						: null
+				}
+				<SelectSubreddits subreddits={subreddits} handleChange={handleChange}/>
 			</MenuBar>
 
 			<MenuDrawer
@@ -72,12 +76,12 @@ const AppMenu = React.memo((props: any) => {
 				onClose={() => setFiltersDrawer(false)}
 			>
 				<Form layout="vertical">
-					<Form.Item label="Order:"><SelectOrder /></Form.Item>
+					<Form.Item label="Order:"><SelectOrder order={order} handleChange={handleChange} /></Form.Item>
 					{order === 'top' || order === 'controversial'
-						? <Form.Item label="Show posts since:"><SelectTime /></Form.Item>
+						? <Form.Item label="Show posts since:"><SelectTime time={time} handleChange={handleChange}/></Form.Item>
 						: null
 					}
-					<Form.Item label="Subreddits:"><SelectSubreddits /></Form.Item>
+					<Form.Item label="Subreddits:"><SelectSubreddits subreddits={subreddits} handleChange={handleChange}/></Form.Item>
 				</Form>
 			</MenuDrawer>
 
