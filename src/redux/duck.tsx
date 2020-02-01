@@ -8,8 +8,8 @@ const initialState = {
 	subreddits: defaultSubreddits,
 	order: 'hot',
 	time: 'day',
-	showNSFW: true, 
-	blurNSFW: true, 
+	showNSFW: false, 
+	blurNSFW: false, 
 	showThumbnails: false,
 }
 
