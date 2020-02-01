@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { Icon, Row, TreeSelect, Select, Drawer, Form, Switch } from 'antd';
 import { TabBar } from 'antd-mobile';
@@ -92,8 +92,18 @@ const SelectSubreddits = ({ subreddits, handleChange }) => (
 // anyadir opcion de columnas
 const AppMenu = React.memo((props: any) => {
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
+	const state = useSelector(state => state);
 	const { time, order, subreddits } = useSelector(state => state);
 	const dispatch = useDispatch();
+	
+	useEffect(() => {
+		const savedState = JSON.parse(localStorage.getItem('state'));
+		dispatch(updateFilters({ ...savedState }));
+	}, [dispatch])
+
+	useEffect(() => {
+		localStorage.setItem('state', JSON.stringify(state));
+	}, [state])
 
 	const handleToggleDrawer = (setDrawer, val) => {
 		setFiltersDrawer(false);
@@ -101,7 +111,6 @@ const AppMenu = React.memo((props: any) => {
 	}
 
 	const handleChange = (newValue) => {
-		dispatch(updateFilters(newValue));
 	}
 
 	return (
