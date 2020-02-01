@@ -3,6 +3,6 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
 import { reducer } from './duck';
 
 
-const store = createStore(reducer, devToolsEnhancer(null));
+const store = createStore(reducer, devToolsEnhancer({}));
 
 export default store;
