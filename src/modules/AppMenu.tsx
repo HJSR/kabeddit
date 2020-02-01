@@ -40,7 +40,7 @@ const NSFWOptions = () => {
 			<Switch
 				checkedChildren="Show"
 				unCheckedChildren="Hide"
-				checked={showNSFW}
+				defaultChecked={showNSFW}
 				onChange={(val) => handleChange({ showNSFW: val })}
 			/>
 			{
@@ -49,7 +49,7 @@ const NSFWOptions = () => {
 						<Switch
 							checkedChildren="Blur"
 							unCheckedChildren="Clear"
-							checked={blurNSFW}
+							defaultChecked={blurNSFW}
 							onChange={(val) => handleChange({ blurNSFW: val })}
 						/>
 					)
@@ -69,7 +69,7 @@ const ThumbnailsOptions = () => {
 			<Switch
 				checkedChildren="On"
 				unCheckedChildren="Off"
-				checked={showThumbnails}
+				defaultChecked={showThumbnails}
 				onChange={(val) => handleChange({ showThumbnails: val })}
 			/>
 		</div>
