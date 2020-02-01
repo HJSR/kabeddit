@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
-import { Icon, Row, TreeSelect, Select, Drawer, Form } from 'antd';
+import { Icon, Row, TreeSelect, Select, Drawer, Form, Switch } from 'antd';
 import { TabBar } from 'antd-mobile';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,6 +29,53 @@ const SelectOrder = ({ order, handleChange }) => (
 		<Option value="controversial">Controversial</Option>
 	</StyledSelect>
 )
+
+const NSFWOptions = () => {
+	const { showNSFW, blurNSFW } = useSelector(state => state);
+	const dispatch = useDispatch();
+	const handleChange = (val) => dispatch(updateFilters(val))
+	return (
+		<div style={{ display: 'flex', alignItems: 'center'}}>
+			<span style={{ marginRight: 5 }}>NSFW: </span>
+			<Switch
+				checkedChildren="Show"
+				unCheckedChildren="Hide"
+				checked={showNSFW}
+				onChange={(val) => handleChange({ showNSFW: val })}
+			/>
+			{
+				showNSFW
+					? (
+						<Switch
+							checkedChildren="Blur"
+							unCheckedChildren="Clear"
+							checked={blurNSFW}
+							onChange={(val) => handleChange({ blurNSFW: val })}
+						/>
+					)
+					: null
+			}
+		</div>
+	)
+}
+
+const ThumbnailsOptions = () => {
+	const { showThumbnails } = useSelector(state => state);
+	const dispatch = useDispatch();
+	const handleChange = (val) => dispatch(updateFilters(val))
+	return (
+		<div style={{ display: 'flex', alignItems: 'center' }}>
+			<span style={{ marginRight: 5 }}>Show thumbnails: </span>
+			<Switch
+				checkedChildren="On"
+				unCheckedChildren="Off"
+				checked={showThumbnails}
+				onChange={(val) => handleChange({ showThumbnails: val })}
+			/>
+		</div>
+	)
+}
+
 const SelectSubreddits = ({ subreddits, handleChange }) => (
 	<SubredditSelect
 		value={subreddits}
@@ -67,6 +114,8 @@ const AppMenu = React.memo((props: any) => {
 						: null
 				}
 				<SelectSubreddits subreddits={subreddits} handleChange={handleChange}/>
+				<NSFWOptions />
+				<ThumbnailsOptions />
 			</MenuBar>
 
 			<MenuDrawer
@@ -89,6 +138,9 @@ const AppMenu = React.memo((props: any) => {
 					}
 					<Form.Item label="Subreddits:">
 						<SelectSubreddits subreddits={subreddits} handleChange={handleChange}/>
+					</Form.Item>
+					<Form.Item label="NSFW:">
+						<NSFWOptions />
 					</Form.Item>
 				</Form>
 			</MenuDrawer>
