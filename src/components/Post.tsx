@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Card, Icon } from 'antd'
+import { Card, Icon, Modal } from 'antd'
 
 const { Meta } = Card;
 
 const Post = ({ post, showThumbs, blur }: { post: any, showThumbs?: boolean, blur?: boolean }) => {
 	const { permalink, title, subreddit_name_prefixed, url, thumbnail } = post;
+	const [previewVisible, setPreviewVisible] = useState(false);
 	const image = showThumbs ? thumbnail : url;
 	const redditUrl = 'https://reddit.com';
 	const redditLink = `${redditUrl}${permalink}`;
@@ -14,7 +15,9 @@ const Post = ({ post, showThumbs, blur }: { post: any, showThumbs?: boolean, blu
 		<PostCard
 			hoverable
 			cover={
-				<ImageContainer href={image} download="title" target="_blank" rel="noopener noreferrer">
+				<ImageContainer
+					onClick={() => setPreviewVisible(true)}
+				>
 					<Image alt={title} src={image} blur={blur} />
 				</ImageContainer>
 			}
@@ -27,6 +30,16 @@ const Post = ({ post, showThumbs, blur }: { post: any, showThumbs?: boolean, blu
 				}
 				description={subreddit_name_prefixed}
 			/>
+			<Modal visible={previewVisible} footer={null} onCancel={() => setPreviewVisible(false)}>
+				<a
+					href={image}
+					target="_blank"
+					rel="noopener noreferrer"
+					style={{ display: 'flex' }}
+				>
+					<img alt="example" src={image} style={{ maxWidth: '100%' }} />
+				</a>
+			</Modal>
 		</PostCard>
 	);
 }
