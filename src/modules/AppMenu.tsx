@@ -139,8 +139,11 @@ const AppMenu = React.memo((props: any) => {
 					<Form.Item label="Subreddits:">
 						<SelectSubreddits subreddits={subreddits} handleChange={handleChange}/>
 					</Form.Item>
-					<Form.Item label="NSFW:">
+					<Form.Item label="">
 						<NSFWOptions />
+					</Form.Item>
+					<Form.Item label="">
+						<ThumbnailsOptions />
 					</Form.Item>
 				</Form>
 			</MenuDrawer>
