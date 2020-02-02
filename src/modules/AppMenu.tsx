@@ -94,7 +94,7 @@ const SelectSubreddits = () => {
 			treeData={subredditsTree}
 			treeCheckable
 			allowClear
-			showCheckedStrategy={'SHOW_PARENT'}
+			showCheckedStrategy={'SHOW_CHILD'}
 			showSearch={false}
 			searchPlaceholder="Select subreddits"
 		/>
