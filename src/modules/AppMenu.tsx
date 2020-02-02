@@ -11,25 +11,37 @@ import { actions } from '../redux/duck';
 const { updateFilters } = actions;
 const { Option } = Select;
 
-const SelectTime = ({ time, handleChange }) => (
-	<StyledSelect value={time} onChange={(time) => handleChange({ time })}>
-		<Option value="hour">Past Hour</Option>
-		<Option value="day">Past 24 Hours</Option>
-		<Option value="week">Past Week</Option>
-		<Option value="month">Past Month</Option>
-		<Option value="year">Past Year</Option>
-		<Option value="all">All Time</Option>
-	</StyledSelect>
-)
+const SelectTime = () => {
+	const { time } = useSelector(state => state);
+	const dispatch = useDispatch();
+	const handleChange = (val) => {
+		dispatch(updateFilters({ time: val }))
+	}
+	return (
+		<StyledSelect value={time} onChange={handleChange}>
+			<Option value="hour">Past Hour</Option>
+			<Option value="day">Past 24 Hours</Option>
+			<Option value="week">Past Week</Option>
+			<Option value="month">Past Month</Option>
+			<Option value="year">Past Year</Option>
+			<Option value="all">All Time</Option>
+		</StyledSelect>
+	)
+}
 
-const SelectOrder = ({ order, handleChange }) => (
-	<StyledSelect value={order} onChange={(order) => handleChange({ order })}>
-		<Option value="hot">Hot</Option>
-		<Option value="new">New</Option>
-		<Option value="top">Top</Option>
-		<Option value="controversial">Controversial</Option>
-	</StyledSelect>
-)
+const SelectOrder = () => {
+	const { order } = useSelector(state => state);
+	const dispatch = useDispatch();
+	const handleChange = (val) => dispatch(updateFilters({ order: val }))
+	return (
+		<StyledSelect value={order} onChange={handleChange}>
+			<Option value="hot">Hot</Option>
+			<Option value="new">New</Option>
+			<Option value="top">Top</Option>
+			<Option value="controversial">Controversial</Option>
+		</StyledSelect>
+	)
+}
 
 const NSFWOptions = () => {
 	const { showNSFW, blurNSFW } = useSelector(state => state);
@@ -102,10 +114,10 @@ const SelectSubreddits = () => {
 }
 
 // anyadir opcion de columnas
-const AppMenu = React.memo((props: any) => {
+const AppMenu = React.memo(() => {
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
 	const state = useSelector(state => state);
-	const { time, order } = useSelector(state => state);
+	const { order } = state;
 	const dispatch = useDispatch();
 	
 	useEffect(() => {
@@ -122,16 +134,13 @@ const AppMenu = React.memo((props: any) => {
 		setDrawer(val);
 	}
 
-	const handleChange = (newValue) => {
-	}
-
 	return (
 		<MenusContainer>
 			<MenuBar type="flex">
-				<SelectOrder order={order} handleChange={handleChange} />
+				<SelectOrder />
 				{
 					order === 'top' || order === 'controversial'
-						? <SelectTime time={time} handleChange={handleChange}/> 
+						? <SelectTime /> 
 						: null
 				}
 				<SelectSubreddits />
@@ -147,12 +156,12 @@ const AppMenu = React.memo((props: any) => {
 			>
 				<Form layout="vertical">
 					<Form.Item label="Order:">
-						<SelectOrder order={order} handleChange={handleChange} />
+						<SelectOrder />
 					</Form.Item>
 					{order === 'top' || order === 'controversial'
 						? (
 							<Form.Item label="Show posts since:">
-								<SelectTime time={time} handleChange={handleChange}/>
+								<SelectTime />
 							</Form.Item>
 						)
 						: null
