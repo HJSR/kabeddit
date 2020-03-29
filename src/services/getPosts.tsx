@@ -10,11 +10,11 @@ export type Params = {
 	limit?: number,
 }
 
-const getPosts = ({ subreddits, order, time, limit }: Params, callback?: Function): Object[] => {
+const getPosts = async({ subreddits, order, time, limit }: Params, callback ?: Function): Promise<Object[]> => {
 	const options = {
-		limit: limit || 50,
-		count: limit || 50,
-		amount: limit || 50,
+		limit: limit || 20,
+		count: limit || 20,
+		amount: limit || 20,
 		skipReplies: true,
 	}
 
@@ -26,23 +26,29 @@ const getPosts = ({ subreddits, order, time, limit }: Params, callback?: Functio
 	let listingResult;
 	switch(order) {
 		case 'hot':
-			listingResult = subs.getHot({ ...options });
+			listingResult = await subs.getHot({ ...options });
 			break;
 		case 'new':
-			listingResult = subs.getNew({ ...options });
+			listingResult = await subs.getNew({ ...options });
 			break;
 		case 'top':
-			listingResult = subs.getTop({ ...options, time });
+			listingResult = await subs.getTop({ ...options, time });
 			break;
 		case 'controversial':
-			listingResult = subs.getControversial({ ...options, time });
+			listingResult = await subs.getControversial({ ...options, time });
 			break;
 		default:
-			listingResult = subs.getHot({ ...options });
+			listingResult = await subs.getHot({ ...options });
 			break;
 	}
-	if (callback) return callback(listingResult);
-	return listingResult;
+	const extensions = ['jpg', 'jpeg', 'png', 'gif'];
+	let filteredResults = await listingResult.filter(res => {
+		let { url } = res;
+		let postExtension = url.substr(url.lastIndexOf('.') + 1);
+		return extensions.includes(postExtension);
+	});
+	if (callback) return callback(filteredResults);
+	return filteredResults;
 }
 
 export default getPosts
