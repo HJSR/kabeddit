@@ -22,7 +22,7 @@ const checkVersion = async () => {
 					}}
 					style={{ paddingLeft: 0 }}
 				>
-					Click here to restart
+					Click here to restart. Actually this doesn't work. I don't know how to force getting a new version on Chrome/Safari/Firefox.
 				</Button>
 			),
 			duration: null,
