@@ -28,7 +28,8 @@ const Loader = () => (
 )
 
 const GalleryView = (props) => {
-	const { subreddits, order, time, showNSFW, blurNSFW, showThumbnails } = useSelector(state => state);
+	const { subreddits, order, time, showNSFW, blurNSFW, showThumbnails } = useSelector(state => state.filters);
+	const { initialized } = useSelector(state => state);
 	
 	const [posts, setPosts] = useState();
 	const [loading, setLoading] = useState(true);
@@ -53,8 +54,10 @@ const GalleryView = (props) => {
 			setPosts(posts);
 			setLoading(false);
 		}
-		getPostsAsync();
-	}, [order, subreddits, time]);
+		if (initialized) {
+			getPostsAsync();
+		}
+	}, [order, subreddits, time, initialized]);
 
 
 	// Filter NSFW posts if it applies

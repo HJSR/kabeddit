@@ -8,11 +8,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import subredditsTree from '../utils/subredditsTree';
 import { actions } from '../redux/duck';
 
-const { updateFilters } = actions;
+const { updateFilters, setInitialized } = actions;
 const { Option } = Select;
 
 const SelectTime = () => {
-	const { time } = useSelector(state => state);
+	const { time } = useSelector(state => state.filters);
 	const dispatch = useDispatch();
 	const handleChange = (val) => {
 		dispatch(updateFilters({ time: val }))
@@ -30,7 +30,7 @@ const SelectTime = () => {
 }
 
 const SelectOrder = () => {
-	const { order } = useSelector(state => state);
+	const { order } = useSelector(state => state.filters);
 	const dispatch = useDispatch();
 	const handleChange = (val) => dispatch(updateFilters({ order: val }))
 	return (
@@ -44,7 +44,7 @@ const SelectOrder = () => {
 }
 
 const NSFWOptions = () => {
-	const { showNSFW, blurNSFW } = useSelector(state => state);
+	const { showNSFW, blurNSFW } = useSelector(state => state.filters);
 	const dispatch = useDispatch();
 	const handleChange = (val) => dispatch(updateFilters(val))
 	return (
@@ -74,7 +74,7 @@ const NSFWOptions = () => {
 }
 
 const ThumbnailsOptions = () => {
-	const { showThumbnails } = useSelector(state => state);
+	const { showThumbnails } = useSelector(state => state.filters);
 	const dispatch = useDispatch();
 	const handleChange = (val) => dispatch(updateFilters(val))
 	return (
@@ -91,7 +91,7 @@ const ThumbnailsOptions = () => {
 }
 
 const SelectSubreddits = () => {
-	const { subreddits } = useSelector(state => state);
+	const { subreddits } = useSelector(state => state.filters);
 	const dispatch = useDispatch();
 	const handleChange = (val) => {
 		dispatch(updateFilters({ subreddits: val }))
@@ -116,18 +116,19 @@ const SelectSubreddits = () => {
 // anyadir opcion de columnas
 const AppMenu = React.memo(() => {
 	const [filtersDrawer, setFiltersDrawer] = useState(false)
-	const state = useSelector(state => state);
-	const { order } = state;
+	const filters = useSelector(state => state.filters);
+	const { order } = filters;
 	const dispatch = useDispatch();
 	
 	useEffect(() => {
-		const savedState = JSON.parse(localStorage.getItem('state'));
+		const savedState = JSON.parse(localStorage.getItem('filters'));
 		dispatch(updateFilters({ ...savedState }));
+		dispatch(setInitialized(true));
 	}, [dispatch])
 
 	useEffect(() => {
-		localStorage.setItem('state', JSON.stringify(state));
-	}, [state])
+		localStorage.setItem('filters', JSON.stringify(filters));
+	}, [filters])
 
 	const handleToggleDrawer = (setDrawer, val) => {
 		setFiltersDrawer(false);
