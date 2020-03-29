@@ -32,17 +32,23 @@ const GalleryView = (props) => {
 	
 	const [posts, setPosts] = useState();
 	const [loading, setLoading] = useState(true);
+	const [loadingMore, setLoadingMore] = useState(false);
 	
 	const getMorePosts = async () => {
 		if (!loading && posts) {
-			const newPosts = await posts.fetchMore({ amount: 100 });
-			await setPosts(newPosts);
+			if (!loadingMore && posts.fetchMore) {
+				setLoadingMore(true);
+				const newPosts = await posts.fetchMore({ amount: 20, skipReplies: false });
+				setPosts(newPosts);
+				setLoadingMore(false);
+			}
 		}
 	}
 
 	useEffect(() => {
 		const getPostsAsync = async () => {
 			setLoading(true);
+			setPosts([]);
 			const posts = await getPosts({ subreddits, order, time });
 			setPosts(posts);
 			setLoading(false);
@@ -50,32 +56,40 @@ const GalleryView = (props) => {
 		getPostsAsync();
 	}, [order, subreddits, time]);
 
+
+	// Filter NSFW posts if it applies
+	const filteredPosts = posts ? posts.filter(post => {
+		if (!showNSFW && post.over_18 === true) {
+			return false
+		} else {
+			return true;
+		}
+	}) : [];
+
 	return (
 		<PostsContainer>
+
 			<InfiniteScroll
-				pageStart={0}
+				pageStart={1}
 				loadMore={getMorePosts}
-				hasMore={true || false}
+				hasMore={true}
 				threshold={5000}
 				loader={<Loader key="loader"/>}
-			>	
-				{!loading ? (
-						<Masonry>
-							{posts ? posts.map((post) => {
-								if (!showNSFW && post.over_18 === true) return null;
-								return (
-									<Post
-										key={post.permalink}
-										post={post}
-										showThumbs={showThumbnails}
-										blur={blurNSFW && post.over_18}
-									/>)
-							}) : <Loader />}
-						</Masonry>
-					) : null
-				}
-				<BackTop />
+			>
+				<Masonry>
+					{
+						filteredPosts.map(post => (
+							<Post
+								key={post.permalink}
+								post={post}
+								showThumbs={showThumbnails}
+								blur={blurNSFW && post.over_18}
+							/>
+						))
+					}
+				</Masonry>
 			</InfiniteScroll>
+			<BackTop />
 		</PostsContainer>
 	)
 }
