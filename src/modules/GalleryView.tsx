@@ -61,22 +61,31 @@ const GalleryView = (props) => {
 
 
 	// Filter NSFW posts if it applies
-	const filteredPosts = posts ? posts.filter(post => {
-		if (!showNSFW && post.over_18 === true) {
-			return false
-		} else {
-			return true;
-		}
-	}) : [];
+	const extensions = ['jpg', 'jpeg', 'png', 'gif'];
+	const filteredPosts = posts 
+		? posts
+			.filter(post => {
+				if (!showNSFW && post.over_18 === true) {
+					return false
+				} else {
+					return true;
+				}
+			})
+			.filter(res => {
+				let { url } = res;
+				let postExtension = url.substr(url.lastIndexOf('.') + 1);
+				return extensions.includes(postExtension);
+			})
+		: [];
 
 	return (
 		<PostsContainer>
 
 			<InfiniteScroll
-				pageStart={1}
+				pageStart={0}
 				loadMore={getMorePosts}
 				hasMore={true}
-				threshold={5000}
+				threshold={500}
 				loader={<Loader key="loader"/>}
 			>
 				<Masonry>

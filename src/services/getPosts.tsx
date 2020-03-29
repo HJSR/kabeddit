@@ -41,14 +41,8 @@ const getPosts = async({ subreddits, order, time, limit }: Params, callback ?: F
 			listingResult = await subs.getHot({ ...options });
 			break;
 	}
-	const extensions = ['jpg', 'jpeg', 'png', 'gif'];
-	let filteredResults = await listingResult.filter(res => {
-		let { url } = res;
-		let postExtension = url.substr(url.lastIndexOf('.') + 1);
-		return extensions.includes(postExtension);
-	});
-	if (callback) return callback(filteredResults);
-	return filteredResults;
+	if (callback) return callback(listingResult);
+	return listingResult;
 }
 
 export default getPosts
