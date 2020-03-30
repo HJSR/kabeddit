@@ -1,68 +1,56 @@
-const subreddit = (name) => ({
-	key: name.toLowerCase(),
-	value: name.toLowerCase(),
-	title: name,
-})
+const defaultSubreddits = [];
+
+const subreddit = (name, isDefault) => {
+	const nameLower = name.toLowerCase();
+	if (isDefault) defaultSubreddits.push(nameLower)
+	return ({
+		key: nameLower,
+		value: nameLower,
+		title: name,
+	})
+}
 
 const subredditsTree = [
 	{
 		...subreddit('General'),
 		children: [
-			subreddit('CityPorn'),
-			subreddit('VillagePorn'),
-			subreddit('SpacePorn'),
-			subreddit('wallpapers'),
-			subreddit('mobilewallpaper'),
-			subreddit('nocontext_wallpapers'),
-			subreddit('Verticalwallpapers'),
-			subreddit('wallpaper'),
+			subreddit('CityPorn', true),
+			subreddit('VillagePorn', true),
+			subreddit('SpacePorn', true),
+			subreddit('wallpapers', true),
+			subreddit('mobilewallpaper', true),
+			subreddit('nocontext_wallpapers', true),
+			subreddit('Verticalwallpapers', true),
+			subreddit('wallpaper', true),
 		],
 	},
 	{
 		...subreddit('Nature'),
 		children: [
-			subreddit('EarthPorn'),
-			subreddit('BeachPorn'),
-			subreddit('WaterPorn'),
-			subreddit('SkyPorn'),
-			subreddit('WeatherPorn'),
-			subreddit('BotanicalPorn'),
-			subreddit('LakePorn'),
+			subreddit('EarthPorn', true),
+			subreddit('BeachPorn', true),
+			subreddit('WaterPorn', true),
+			subreddit('SkyPorn', true),
+			subreddit('WeatherPorn', true),
+			subreddit('BotanicalPorn', true),
+			subreddit('LakePorn', true),
 		],
 	},
 	{
 		...subreddit('Anime'),
 		children: [
-			subreddit('AnimePhoneWallpapers'),
-			subreddit('awwnime'),
-			subreddit('animeponytails'),
-			subreddit('Pixiv'),
-			subreddit('twodeeart'),
-			subreddit('Moescape'),
-			subreddit('Patchuu'),
-			subreddit('AnimeWallpaper'),
-			subreddit('megane'),
-			subreddit('streetmoe'),
+			subreddit('AnimePhoneWallpapers', false),
+			subreddit('awwnime', false),
+			subreddit('animeponytails', false),
+			subreddit('Pixiv', false),
+			subreddit('twodeeart', false),
+			subreddit('Moescape', false),
+			subreddit('Patchuu', false),
+			subreddit('AnimeWallpaper', false),
+			subreddit('megane', false),
+			subreddit('streetmoe', false),
 		],
 	},
-];
-
-const defaultSubreddits = [
-	"mobilewallpaper",
-	"nocontext_wallpapers",
-	"wallpapers",
-	"cityporn",
-	"villageporn",
-	"spaceporn",
-	"verticalwallpapers",
-	"wallpaper",
-	"earthporn",
-	"beachporn",
-	"waterporn",
-	"skyporn",
-	"weatherporn",
-	"botanicalporn",
-	"lakeporn",
 ];
 
 exports.handler = async (event, context, callback) => {
