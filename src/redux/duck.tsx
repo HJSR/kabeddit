@@ -3,6 +3,7 @@ import { defaultSubreddits } from "../utils/subredditsTree"
 const constants = {
 	UPDATE_FILTERS: 'UPDATE_FILTERS',
 	SET_INITIALIZED: 'SET_INITIALIZED',
+	UPDATE_SUBREDDITS: 'UPDATE_SUBREDDITS',
 }
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
 		blurNSFW: false,
 		showThumbnails: false,
 	},
+	subreddits: [],
 	initialized: false,
 }
 
@@ -30,6 +32,10 @@ const reducer = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				initialized: action.initialized,
 			})
+		case constants.UPDATE_SUBREDDITS:
+			return Object.assign({}, state, {
+				subreddits: action.subreddits,
+			})
 		default:
 			return state
 	}
@@ -43,6 +49,10 @@ const actions = {
 	setInitialized: (value) => ({
 		type: constants.SET_INITIALIZED,
 		initialized: value,
+	}),
+	updateSubs: (subreddits) => ({
+		type: constants.UPDATE_SUBREDDITS,
+		subreddits,
 	})
 }
 
