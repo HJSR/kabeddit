@@ -7,6 +7,7 @@ const getSubreddits = async () => {
 		if (!res || !res.data || res.status !== 200) {
 			throw new Error("No res, res.data, res.status not 200");
 		};
+		console.log(res);
 		return JSON.parse(res.data);
 	} catch (err) {
 		return {
