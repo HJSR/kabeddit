@@ -100,10 +100,7 @@ const SelectSubreddits = () => {
 	return (
 		<SubredditSelect
 			value={subreddits}
-			onChange={(val) => {
-				console.log(val)
-				handleChange(val)
-			}}
+			onChange={(val) => handleChange(val)}
 			treeData={subredditsList}
 			treeCheckable
 			allowClear
@@ -123,8 +120,8 @@ const AppMenu = React.memo(() => {
 	
 	useEffect(() => {
 		const thisFunction = async () => {
-			const { subreddits, defaultSelection } = await getSubreddits()
-			dispatch(updateSubs(subreddits));
+			// const { subreddits } = await getSubreddits()
+			// dispatch(updateSubs(subreddits));
 			const savedState = JSON.parse(localStorage.getItem('filters'));
 			dispatch(updateFilters({ ...savedState }));
 			dispatch(setInitialized(true));
