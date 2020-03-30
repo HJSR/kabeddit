@@ -50,9 +50,9 @@ const actions = {
 		type: constants.SET_INITIALIZED,
 		initialized: value,
 	}),
-	updateSubs: (subreddits) => ({
+	updateSubs: (value) => ({
 		type: constants.UPDATE_SUBREDDITS,
-		subreddits,
+		subreddits: value,
 	})
 }
 
