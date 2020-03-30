@@ -2,14 +2,17 @@ import axios from 'axios';
 import subredditsTree, { defaultSubreddits } from '../utils/subredditsTree';
 
 const getSubreddits = async () => {
-	const res = await axios.get('/.netlify/functions/subreddits');
-	if (!res || !res.data || res.status !== 200) {
+	try {
+		const res = await axios.get('/.netlify/functions/subreddits');
+		if (!res || !res.data || res.status !== 200) {
+			throw new Error("No res, res.data, res.status not 200");
+		};
+		return JSON.parse(res.data);
+	} catch (err) {
 		return {
 			subreddits: subredditsTree,
 			defaultSelection: defaultSubreddits,
 		};
-	};
-	const data = JSON.parse(res.data);
-	return data;
+	}
 }
 export default getSubreddits;
