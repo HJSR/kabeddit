@@ -5,10 +5,10 @@ import { TabBar } from 'antd-mobile';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import subredditsTree from '../utils/subredditsTree';
 import { actions } from '../redux/duck';
+import getSubreddits from '../services/getSubreddits';
 
-const { updateFilters, setInitialized } = actions;
+const { updateFilters, setInitialized, updateSubs } = actions;
 const { Option } = Select;
 
 const SelectTime = () => {
@@ -92,6 +92,7 @@ const ThumbnailsOptions = () => {
 
 const SelectSubreddits = () => {
 	const { subreddits } = useSelector(state => state.filters);
+	const subredditsList = useSelector(state => state.subreddits);
 	const dispatch = useDispatch();
 	const handleChange = (val) => {
 		dispatch(updateFilters({ subreddits: val }))
@@ -103,7 +104,7 @@ const SelectSubreddits = () => {
 				console.log(val)
 				handleChange(val)
 			}}
-			treeData={subredditsTree}
+			treeData={subredditsList}
 			treeCheckable
 			allowClear
 			showCheckedStrategy={'SHOW_CHILD'}
@@ -121,9 +122,15 @@ const AppMenu = React.memo(() => {
 	const dispatch = useDispatch();
 	
 	useEffect(() => {
-		const savedState = JSON.parse(localStorage.getItem('filters'));
-		dispatch(updateFilters({ ...savedState }));
-		dispatch(setInitialized(true));
+		const thisFunction = async () => {
+			const { subreddits, defaultSelection } = await getSubreddits()
+			dispatch(updateSubs(subreddits));
+			dispatch(updateFilters({ subreddits: defaultSelection }));
+			const savedState = JSON.parse(localStorage.getItem('filters'));
+			dispatch(updateFilters({ ...savedState }));
+			dispatch(setInitialized(true));
+		}
+		thisFunction();
 	}, [dispatch])
 
 	useEffect(() => {
