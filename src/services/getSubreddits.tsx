@@ -3,7 +3,7 @@ import subredditsTree, { defaultSubreddits } from '../utils/subredditsTree';
 
 const getSubreddits = async () => {
 	try {
-		const res = await axios.get('/.netlify/functions/subreddits');
+		const res = await axios.get('https://kabeddit.netlify.com/.netlify/functions/subreddits');
 		if (!res || !res.data || res.status !== 200) {
 			throw new Error("No res, res.data, res.status not 200");
 		};

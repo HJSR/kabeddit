@@ -1,4 +1,4 @@
-import { defaultSubreddits } from "../utils/subredditsTree"
+import subredditsTree, { defaultSubreddits } from "../utils/subredditsTree"
 
 const constants = {
 	UPDATE_FILTERS: 'UPDATE_FILTERS',
@@ -15,7 +15,7 @@ const initialState = {
 		blurNSFW: false,
 		showThumbnails: false,
 	},
-	subreddits: [],
+	subreddits: subredditsTree,
 	initialized: false,
 }
 

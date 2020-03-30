@@ -125,7 +125,6 @@ const AppMenu = React.memo(() => {
 		const thisFunction = async () => {
 			const { subreddits, defaultSelection } = await getSubreddits()
 			dispatch(updateSubs(subreddits));
-			dispatch(updateFilters({ subreddits: defaultSelection }));
 			const savedState = JSON.parse(localStorage.getItem('filters'));
 			dispatch(updateFilters({ ...savedState }));
 			dispatch(setInitialized(true));
